@@ -9,9 +9,9 @@ plugins {
 
 repositories {
     mavenLocal()
-    /*maven {
-        url = uri('http://repo.maven.apache.org/maven2')
-    }*/
+    maven {
+        url = uri('https://github.com/schroederonline/Binance')
+    }
 }
 
 dependencies {
@@ -22,15 +22,27 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-group = 'com.binance.api'
-version = '1.0.1'
+group = 'de.schroederonline.binance.api'
+version = '1.0.0'
 sourceCompatibility = '1.8'
 
-/*
 publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
+    repositories {
+        maven {
+            name = "Github"
+            url = uri("https://maven.pkg.github.com/schroederonline/Binance")
+            credentials {
+                username = findProperty("github.username")
+                password = findProperty("github.token")
+            }
         }
     }
-}*/
+    publications {
+        register("jar", MavenPublication) {
+            from(components["java"])
+            pom {
+                url.set("https://github.com/schroederonline/Binance.git")
+            }
+        }
+    }
+}
