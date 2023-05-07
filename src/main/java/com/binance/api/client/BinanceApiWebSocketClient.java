@@ -4,6 +4,7 @@ import com.binance.api.client.domain.event.*;
 import com.binance.api.client.domain.market.CandlestickInterval;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -82,9 +83,9 @@ public interface BinanceApiWebSocketClient extends Closeable {
      */
     Closeable onAllBookTickersEvent(BinanceApiCallback<BookTickerEvent> callback);
 
-//    /**
+    //    /**
 //     * @deprecated This method is no longer functional. Please use the returned {@link Closeable} from any of the other methods to close the web socket.
 //     */
 //    @Deprecated
-//    void close();
+    void close() throws IOException;
 }
