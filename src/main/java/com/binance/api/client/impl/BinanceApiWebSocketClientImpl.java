@@ -11,6 +11,7 @@ import okhttp3.Request;
 import okhttp3.WebSocket;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -85,15 +86,17 @@ public class BinanceApiWebSocketClientImpl implements BinanceApiWebSocketClient,
         return createNewWebSocket(channel, new BinanceApiWebSocketListener<>(callback, BookTickerEvent.class));
     }
 
-    /**
-     * @deprecated This method is no longer functional. Please use the returned {@link Closeable} from any of the other methods to close the web socket.
-     */
+    //    /**
+//     * @deprecated This method is no longer functional. Please use the returned {@link Closeable} from any of the other methods to close the web socket.
+//     */
+//
     @Override
-    public void close() {
+    public void close() throws IOException {
+
     }
 
     private Closeable createNewWebSocket(String channel, BinanceApiWebSocketListener<?> listener) {
-        String streamingUrl = String.format("%s/%s", BinanceApiConfig.useTestnetStreaming?BinanceApiConfig.getStreamTestNetBaseUrl():BinanceApiConfig.getStreamApiBaseUrl(), channel);
+        String streamingUrl = String.format("%s/%s", BinanceApiConfig.useTestnetStreaming ? BinanceApiConfig.getStreamTestNetBaseUrl() : BinanceApiConfig.getStreamApiBaseUrl(), channel);
         Request request = new Request.Builder().url(streamingUrl).build();
         final WebSocket webSocket = client.newWebSocket(request, listener);
         return () -> {
@@ -103,4 +106,6 @@ public class BinanceApiWebSocketClientImpl implements BinanceApiWebSocketClient,
             listener.onClosed(webSocket, code, null);
         };
     }
+
+
 }
